@@ -15,6 +15,17 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 <style>
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translate(-50%, 20px);
+        }
+        to {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+    }
+    
     .gallery-main {
         border-radius: 16px;
         overflow: hidden;
@@ -95,6 +106,13 @@
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
+    }
+    .favorite-btn {
+        transition: all 0.2s ease;
+    }
+    .favorite-btn:hover {
+        border-color: #ef4444 !important;
+        background-color: #fef2f2 !important;
     }
 </style>
 @endpush
@@ -185,10 +203,11 @@
                     <div class="swiper-wrapper">
                         @foreach($propertyImages as $image)
                             <div class="swiper-slide" onclick="openFancybox({{ $loop->index }})">
-                                <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                <img src="{{ route('file.show', ['path' => $image->image_path]) }}" 
                                      alt="{{ $property->title }}"
                                      class="w-full h-full object-cover"
-                                     loading="lazy">
+                                     loading="lazy"
+                                     onerror="this.src='https://via.placeholder.com/800x600?text=Property+Image'">
                             </div>
                         @endforeach
                     </div>
@@ -213,7 +232,10 @@
                     <div class="swiper-wrapper">
                         @foreach($propertyImages->take(3) as $index => $image)
                             <div class="swiper-slide">
-                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Thumbnail" loading="lazy">
+                                <img src="{{ route('file.show', ['path' => $image->image_path]) }}" 
+                                     alt="Thumbnail" 
+                                     loading="lazy"
+                                     onerror="this.src='https://via.placeholder.com/400x160?text=Thumbnail'">
                                 @if($index === 0 && $imageCount > 3)
                                     <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
                                         <span class="text-white font-semibold">+{{ $imageCount - 3 }}</span>
@@ -507,11 +529,12 @@
                         <a href="{{ route('properties.show', $similar->slug) }}" class="flex gap-3 group">
                             @php
                                 $similarImage = $similar->primary_image ?? null;
-                                $similarImageUrl = $similarImage ? asset('storage/' . $similarImage) : 'https://via.placeholder.com/80x80?text=Property';
+                                $similarImageUrl = $similarImage ? route('file.show', ['path' => $similarImage]) : 'https://via.placeholder.com/80x80?text=Property';
                             @endphp
                             <img src="{{ $similarImageUrl }}" 
                                  alt="{{ $similar->title }}" 
-                                 class="w-20 h-20 rounded-lg object-cover">
+                                 class="w-20 h-20 rounded-lg object-cover"
+                                 onerror="this.src='https://via.placeholder.com/80x80?text=Property'">
                             <div class="flex-1">
                                 <h4 class="font-medium text-gray-900 group-hover:text-blue-600 transition line-clamp-2 text-sm">
                                     {{ $similar->title }}
@@ -581,7 +604,7 @@
         // Initialize Fancybox with all images
         const images = [
             @foreach($propertyImages as $image)
-                { src: '{{ asset('storage/' . $image->image_path) }}', caption: '{{ $property->title }}' },
+                { src: '{{ route('file.show', ['path' => $image->image_path]) }}', caption: '{{ $property->title }}' },
             @endforeach
         ];
         
@@ -610,7 +633,7 @@
         });
         
         // Make main gallery slides clickable
-        document.querySelectorAll('.gallery-main .swiper-slide').forEach((slide, index) => {
+        document.querySelectorAll('.gallery-main .swiper-slide').forEach((slide) => {
             slide.addEventListener('click', function() {
                 openFancybox(galleryMain.realIndex);
             });
@@ -647,30 +670,79 @@
     });
     
     function toggleFavorite(propertyId) {
+        @auth
         fetch(`/properties/${propertyId}/favorite`, {
             method: 'POST',
-            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' }
+            headers: { 
+                'X-CSRF-TOKEN': '{{ csrf_token() }}', 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             const btn = document.querySelector('.favorite-btn i');
+            const btnText = document.querySelector('.favorite-btn span');
+            
             if (data.status === 'added') {
                 btn.classList.remove('ri-heart-line');
                 btn.classList.add('ri-heart-fill', 'text-red-500');
-            } else {
+                if (btnText) btnText.textContent = 'Saved';
+                showToast('Property saved to favorites!', 'success');
+            } else if (data.status === 'removed') {
                 btn.classList.remove('ri-heart-fill', 'text-red-500');
                 btn.classList.add('ri-heart-line');
+                if (btnText) btnText.textContent = 'Save';
+                showToast('Property removed from favorites', 'success');
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Something went wrong. Please try again.', 'error');
         });
+        @else
+        window.location.href = '{{ route("login") }}?redirect={{ url()->current() }}';
+        @endauth
+    }
+    
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `fixed bottom-24 left-1/2 transform -translate-x-1/2 px-5 py-3 rounded-lg text-white text-sm font-medium shadow-lg z-50 ${
+            type === 'error' ? 'bg-red-600' : 'bg-green-600'
+        }`;
+        toast.textContent = message;
+        toast.style.animation = 'fadeIn 0.3s ease';
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     }
     
     function shareProperty() {
         const url = window.location.href;
+        const title = '{{ $property->title }}';
+        
         if (navigator.share) {
-            navigator.share({ title: '{{ $property->title }}', url });
+            navigator.share({ 
+                title: title, 
+                text: 'Check out this property: ' + title,
+                url: url 
+            }).catch(() => {
+                // User cancelled
+            });
         } else {
-            navigator.clipboard.writeText(url);
-            alert('Link copied to clipboard!');
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Link copied to clipboard!', 'success');
+            }).catch(() => {
+                prompt('Copy this link:', url);
+            });
         }
     }
 </script>

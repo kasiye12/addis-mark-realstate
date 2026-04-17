@@ -169,6 +169,23 @@
     .location-overlay {
         background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%);
     }
+    /* Text shadow for better readability */
+.drop-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.drop-shadow-md {
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.drop-shadow-lg {
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Location card text shadow */
+.location-card .drop-shadow {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
 </style>
 @endpush
 
@@ -488,13 +505,29 @@
                    class="location-card group relative h-64"
                    data-aos="fade-up"
                    data-aos-delay="{{ $loop->index * 100 }}">
-                    <img src="https://picsum.photos/400/500?random={{ $loop->index }}" 
+                    @php
+                        // Check if location has image, otherwise use fallback
+                        if ($location->image && \Storage::disk('public')->exists($location->image)) {
+                            $locationImage = route('file.show', ['path' => $location->image]) . '?v=' . time();
+                        } else {
+                            // Fallback images based on index
+                            $fallbackImages = [
+                                'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg',
+                                'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg',
+                                'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg',
+                                'https://images.pexels.com/photos/2587054/pexels-photo-2587054.jpeg',
+                            ];
+                            $locationImage = $fallbackImages[$loop->index] ?? $fallbackImages[0];
+                        }
+                    @endphp
+                    <img src="{{ $locationImage }}" 
                          alt="{{ $location->area_name }}" 
-                         class="w-full h-full object-cover">
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg'">
                     <div class="location-overlay absolute inset-0"></div>
                     <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-                        <h3 class="text-xl font-bold">{{ $location->area_name }}</h3>
-                        <p class="text-sm opacity-90">{{ $location->active_properties_count ?? 0 }} Properties</p>
+                        <h3 class="text-xl font-bold drop-shadow-lg">{{ $location->area_name }}</h3>
+                        <p class="text-sm opacity-90 drop-shadow">{{ $location->active_properties_count ?? 0 }} Properties</p>
                     </div>
                 </a>
             @endforeach
@@ -503,44 +536,49 @@
 </section>
 
 <!-- Why Choose Us -->
-<section class="py-16 bg-gradient-to-br from-slate-800 to-blue-900">
+<section class="py-16 bg-white">
     <div class="container mx-auto px-4">
         <div class="text-center mb-12" data-aos="fade-up">
-            <h2 class="text-3xl lg:text-4xl font-bold text-white mb-3">Why Choose Addis Mark Real Estate</h2>
-            <p class="text-gray-300 text-lg max-w-2xl mx-auto">Experience excellence in Ethiopian real estate with our premium services</p>
+            <span class="text-blue-600 font-semibold text-sm uppercase tracking-wider">Our Advantages</span>
+            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mt-2 mb-4">Why Choose Addis Mark Real Estate</h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">Experience excellence in Ethiopian real estate with our premium services</p>
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="text-center" data-aos="fade-up" data-aos-delay="0">
-                <div class="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-xl flex items-center justify-center">
-                    <i class="ri-shield-check-line text-3xl text-amber-400"></i>
+            <!-- Feature 1 -->
+            <div class="text-center group p-6 rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all" data-aos="fade-up" data-aos-delay="0">
+                <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-600 transition-all">
+                    <i class="ri-shield-check-line text-3xl text-blue-600 group-hover:text-white transition-all"></i>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Trusted & Verified</h3>
-                <p class="text-gray-300 text-sm">All properties are verified and listings are accurate</p>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Trusted & Verified</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">All properties are verified and listings are accurate</p>
             </div>
             
-            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-xl flex items-center justify-center">
-                    <i class="ri-customer-service-2-line text-3xl text-amber-400"></i>
+            <!-- Feature 2 -->
+            <div class="text-center group p-6 rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-600 transition-all">
+                    <i class="ri-customer-service-2-line text-3xl text-blue-600 group-hover:text-white transition-all"></i>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">24/7 Support</h3>
-                <p class="text-gray-300 text-sm">Dedicated support team available around the clock</p>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">24/7 Support</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Dedicated support team available around the clock</p>
             </div>
             
-            <div class="text-center" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-xl flex items-center justify-center">
-                    <i class="ri-bar-chart-2-line text-3xl text-amber-400"></i>
+            <!-- Feature 3 -->
+            <div class="text-center group p-6 rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-600 transition-all">
+                    <i class="ri-bar-chart-2-line text-3xl text-blue-600 group-hover:text-white transition-all"></i>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Market Expertise</h3>
-                <p class="text-gray-300 text-sm">{{ $stats['experience'] ?? 15 }}+ years in real estate</p>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Market Expertise</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">{{ $stats['experience'] ?? 15 }}+ years in real estate</p>
             </div>
             
-            <div class="text-center" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-xl flex items-center justify-center">
-                    <i class="ri-secure-payment-line text-3xl text-amber-400"></i>
+            <!-- Feature 4 -->
+            <div class="text-center group p-6 rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-600 transition-all">
+                    <i class="ri-secure-payment-line text-3xl text-blue-600 group-hover:text-white transition-all"></i>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Secure Transactions</h3>
-                <p class="text-gray-300 text-sm">Safe and transparent property transactions</p>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Secure Transactions</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Safe and transparent property transactions</p>
             </div>
         </div>
     </div>

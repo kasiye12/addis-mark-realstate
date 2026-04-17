@@ -197,11 +197,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/categories/reorder', [AdminCategoryController::class, 'reorder'])->name('categories.reorder');
     
     // Locations Management
-    Route::resource('locations', AdminLocationController::class)->except(['create', 'edit']);
-    Route::post('/locations/{location}/toggle-popular', [AdminLocationController::class, 'togglePopular'])->name('locations.toggle-popular');
-    Route::post('/locations/bulk-delete', [AdminLocationController::class, 'bulkDelete'])->name('locations.bulk-delete');
-    Route::get('/locations/export', [AdminLocationController::class, 'export'])->name('locations.export');
-    Route::get('/locations/search', [AdminLocationController::class, 'search'])->name('locations.search');
+Route::resource('locations', AdminLocationController::class);
+Route::post('/locations/{location}/toggle-popular', [AdminLocationController::class, 'togglePopular'])->name('locations.toggle-popular');
+Route::post('/locations/bulk-delete', [AdminLocationController::class, 'bulkDelete'])->name('locations.bulk-delete');
+Route::get('/locations/export', [AdminLocationController::class, 'export'])->name('locations.export');
+Route::get('/locations/search', [AdminLocationController::class, 'search'])->name('locations.search');
     
     // Users Management
     Route::resource('users', AdminUserController::class);

@@ -85,19 +85,19 @@
                         $isAgent = $user->isAgent();
                     @endphp
                     
-                    {{-- Admin Button --}}
+                    {{-- Admin Button - DARK TEXT --}}
                     @if($isAdmin)
                         <a href="{{ route('admin.dashboard') }}" 
-                           class="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg hover:from-purple-700 hover:to-purple-800 transition shadow-sm">
+                           class="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition shadow-sm">
                             <i class="ri-admin-line"></i>
                             <span>Admin</span>
                         </a>
                     @endif
                     
-                    {{-- Agent Button --}}
+                    {{-- Agent Button - DARK TEXT --}}
                     @if($isAgent && !$isAdmin)
                         <a href="{{ route('agent.dashboard') }}" 
-                           class="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg hover:from-blue-700 hover:to-blue-800 transition shadow-sm">
+                           class="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition shadow-sm">
                             <i class="ri-user-star-line"></i>
                             <span>Agent</span>
                         </a>
@@ -110,8 +110,8 @@
                             <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-xs font-semibold shadow-sm">
                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                             </div>
-                            <span class="text-sm font-medium max-w-[120px] truncate">{{ $user->name }}</span>
-                            <i class="ri-arrow-down-s-line text-gray-400 transition-transform" :class="{ 'rotate-180': open }"></i>
+                            <span class="text-sm font-medium max-w-[120px] truncate text-gray-700">{{ $user->name }}</span>
+                            <i class="ri-arrow-down-s-line text-gray-500 transition-transform" :class="{ 'rotate-180': open }"></i>
                         </button>
                         
                         <div x-show="open" 
@@ -127,65 +127,75 @@
                             {{-- User Info Header --}}
                             <div class="px-4 py-3 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
                                 <p class="text-sm font-semibold text-gray-900">{{ $user->name }}</p>
-                                <p class="text-xs text-gray-500 truncate">{{ $user->email }}</p>
-                                <span class="inline-block mt-1.5 px-2 py-0.5 text-xs font-medium rounded-full {{ $user->role_badge[0] }}">
-                                    {{ $user->role_badge[1] }}
-                                </span>
+                                <p class="text-xs text-gray-600 truncate">{{ $user->email }}</p>
+                                @if($isAdmin)
+                                    <span class="inline-block mt-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        <i class="ri-admin-line mr-1"></i> Admin
+                                    </span>
+                                @elseif($isAgent)
+                                    <span class="inline-block mt-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        <i class="ri-user-star-line mr-1"></i> Agent
+                                    </span>
+                                @else
+                                    <span class="inline-block mt-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                                        <i class="ri-user-line mr-1"></i> User
+                                    </span>
+                                @endif
                             </div>
                             
                             {{-- Dashboard Link --}}
                             @if($isAdmin)
                                 <a href="{{ route('admin.dashboard') }}" 
-                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition">
-                                    <i class="ri-dashboard-line text-lg"></i>
-                                    <span class="font-medium">Admin Dashboard</span>
+                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-purple-700 font-medium hover:bg-purple-50 transition">
+                                    <i class="ri-admin-line text-lg text-purple-600"></i>
+                                    <span>Admin Dashboard</span>
                                 </a>
                             @elseif($isAgent)
                                 <a href="{{ route('agent.dashboard') }}" 
-                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition">
-                                    <i class="ri-dashboard-line text-lg"></i>
-                                    <span class="font-medium">Agent Dashboard</span>
+                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-blue-700 font-medium hover:bg-blue-50 transition">
+                                    <i class="ri-user-star-line text-lg text-blue-600"></i>
+                                    <span>Agent Dashboard</span>
                                 </a>
                             @else
                                 <a href="{{ route('dashboard') }}" 
-                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition">
+                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 font-medium hover:bg-gray-50 hover:text-blue-600 transition">
                                     <i class="ri-dashboard-line text-lg"></i>
-                                    <span class="font-medium">Dashboard</span>
+                                    <span>Dashboard</span>
                                 </a>
                             @endif
                             
                             {{-- Profile Settings --}}
                             <a href="{{ route('profile.edit') }}" 
-                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition">
+                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 font-medium hover:bg-gray-50 hover:text-blue-600 transition">
                                 <i class="ri-user-settings-line text-lg"></i>
-                                <span class="font-medium">Profile Settings</span>
+                                <span>Profile Settings</span>
                             </a>
                             
                             {{-- My Properties (Agents and Admins) --}}
                             @if($isAdmin || $isAgent)
                                 <a href="{{ route('user.properties.index') }}" 
-                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition">
+                                   class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 font-medium hover:bg-gray-50 hover:text-blue-600 transition">
                                     <i class="ri-building-line text-lg"></i>
-                                    <span class="font-medium">My Properties</span>
+                                    <span>My Properties</span>
                                 </a>
                             @endif
                             
                             {{-- Saved Properties --}}
                             <a href="{{ route('user.properties.favorites') }}" 
-                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition">
+                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 font-medium hover:bg-gray-50 hover:text-blue-600 transition">
                                 <i class="ri-heart-line text-lg"></i>
-                                <span class="font-medium">Saved Properties</span>
+                                <span>Saved Properties</span>
                             </a>
                             
-                            <hr class="my-1 border-gray-100">
+                            <hr class="my-1 border-gray-200">
                             
                             {{-- Logout --}}
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" 
-                                        class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition">
+                                        class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 font-medium hover:bg-red-50 transition">
                                     <i class="ri-logout-box-line text-lg"></i>
-                                    <span class="font-medium">Sign Out</span>
+                                    <span>Sign Out</span>
                                 </button>
                             </form>
                         </div>
@@ -261,7 +271,7 @@
                 <span class="font-medium">Contact</span>
             </a>
             
-            <hr class="my-4 border-gray-100">
+            <hr class="my-4 border-gray-200">
             
             @auth
                 @php
@@ -277,71 +287,81 @@
                     </div>
                     <div class="flex-1">
                         <p class="font-semibold text-gray-900">{{ $user->name }}</p>
-                        <p class="text-xs text-gray-500 truncate">{{ $user->email }}</p>
-                        <span class="inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full {{ $user->role_badge[0] }}">
-                            {{ $user->role_badge[1] }}
-                        </span>
+                        <p class="text-xs text-gray-600 truncate">{{ $user->email }}</p>
+                        @if($isAdmin)
+                            <span class="inline-block mt-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                                <i class="ri-admin-line mr-1"></i> Admin
+                            </span>
+                        @elseif($isAgent)
+                            <span class="inline-block mt-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                <i class="ri-user-star-line mr-1"></i> Agent
+                            </span>
+                        @else
+                            <span class="inline-block mt-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                                <i class="ri-user-line mr-1"></i> User
+                            </span>
+                        @endif
                     </div>
                 </div>
                 
                 {{-- Dashboard Links --}}
                 @if($isAdmin)
                     <a href="{{ route('admin.dashboard') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-purple-600 hover:bg-purple-50 rounded-xl transition">
-                        <i class="ri-admin-line text-xl"></i>
-                        <span class="font-medium">Admin Dashboard</span>
+                       class="flex items-center gap-3 px-4 py-3 text-purple-700 font-medium hover:bg-purple-50 rounded-xl transition">
+                        <i class="ri-admin-line text-xl text-purple-600"></i>
+                        <span>Admin Dashboard</span>
                     </a>
                 @elseif($isAgent)
                     <a href="{{ route('agent.dashboard') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-blue-600 hover:bg-blue-50 rounded-xl transition">
-                        <i class="ri-user-star-line text-xl"></i>
-                        <span class="font-medium">Agent Dashboard</span>
+                       class="flex items-center gap-3 px-4 py-3 text-blue-700 font-medium hover:bg-blue-50 rounded-xl transition">
+                        <i class="ri-user-star-line text-xl text-blue-600"></i>
+                        <span>Agent Dashboard</span>
                     </a>
                 @else
                     <a href="{{ route('dashboard') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition">
+                       class="flex items-center gap-3 px-4 py-3 text-gray-700 font-medium hover:bg-gray-50 rounded-xl transition">
                         <i class="ri-dashboard-line text-xl"></i>
-                        <span class="font-medium">Dashboard</span>
+                        <span>Dashboard</span>
                     </a>
                 @endif
                 
                 {{-- Profile Settings --}}
                 <a href="{{ route('profile.edit') }}" 
-                   class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition">
+                   class="flex items-center gap-3 px-4 py-3 text-gray-700 font-medium hover:bg-gray-50 rounded-xl transition">
                     <i class="ri-user-settings-line text-xl"></i>
-                    <span class="font-medium">Profile Settings</span>
+                    <span>Profile Settings</span>
                 </a>
                 
                 {{-- My Properties --}}
                 @if($isAdmin || $isAgent)
                     <a href="{{ route('user.properties.index') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition">
+                       class="flex items-center gap-3 px-4 py-3 text-gray-700 font-medium hover:bg-gray-50 rounded-xl transition">
                         <i class="ri-building-line text-xl"></i>
-                        <span class="font-medium">My Properties</span>
+                        <span>My Properties</span>
                     </a>
                 @endif
                 
                 {{-- Saved Properties --}}
                 <a href="{{ route('user.properties.favorites') }}" 
-                   class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition">
+                   class="flex items-center gap-3 px-4 py-3 text-gray-700 font-medium hover:bg-gray-50 rounded-xl transition">
                     <i class="ri-heart-line text-xl"></i>
-                    <span class="font-medium">Saved Properties</span>
+                    <span>Saved Properties</span>
                 </a>
                 
                 {{-- Logout --}}
                 <form method="POST" action="{{ route('logout') }}" class="mt-2">
                     @csrf
                     <button type="submit" 
-                            class="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition">
+                            class="w-full flex items-center gap-3 px-4 py-3 text-red-600 font-medium hover:bg-red-50 rounded-xl transition">
                         <i class="ri-logout-box-line text-xl"></i>
-                        <span class="font-medium">Sign Out</span>
+                        <span>Sign Out</span>
                     </button>
                 </form>
             @else
                 <a href="{{ route('login') }}" 
-                   class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition">
+                   class="flex items-center gap-3 px-4 py-3 text-gray-700 font-medium hover:bg-gray-50 rounded-xl transition">
                     <i class="ri-login-box-line text-xl"></i>
-                    <span class="font-medium">Sign In</span>
+                    <span>Sign In</span>
                 </a>
                 <a href="{{ route('register') }}" 
                    class="flex items-center justify-center gap-2 px-4 py-3 mt-2 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition shadow-sm">

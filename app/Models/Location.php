@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Illuminate\Support\Facades\Storage;
 
 class Location extends Model
 {
@@ -18,6 +19,7 @@ class Location extends Model
         'slug',
         'latitude',
         'longitude',
+        'image',
         'is_popular',
     ];
 
@@ -26,6 +28,8 @@ class Location extends Model
         'longitude' => 'decimal:8',
         'is_popular' => 'boolean',
     ];
+
+    protected $appends = ['image_url'];
 
     public function getSlugOptions(): SlugOptions
     {
@@ -54,25 +58,20 @@ class Location extends Model
         return $this->properties()->where('is_active', true)->count();
     }
 
-    public function getTotalPropertiesCountAttribute()
+    /**
+     * Get the location image URL with cache busting
+     */
+    public function getImageUrlAttribute()
     {
-        return $this->properties()->count();
+        if ($this->image && Storage::disk('public')->exists($this->image)) {
+            // Add timestamp to prevent caching
+            return route('file.show', ['path' => $this->image]) . '?v=' . time();
+        }
+        return null;
     }
 
     public function scopePopular($query)
     {
         return $query->where('is_popular', true);
-    }
-
-    public function scopeByCity($query, $city)
-    {
-        return $query->where('city', $city);
-    }
-
-    public function scopeWithActiveProperties($query)
-    {
-        return $query->whereHas('properties', function($q) {
-            $q->where('is_active', true);
-        });
     }
 }

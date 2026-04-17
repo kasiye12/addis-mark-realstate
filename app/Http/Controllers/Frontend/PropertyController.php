@@ -195,44 +195,63 @@ class PropertyController extends Controller
         ));
     }
 
-    /**
-     * Display properties by category.
-     */
-    public function category($slug, Request $request)
-    {
-        $category = Category::where('slug', $slug)->firstOrFail();
-        
-        $query = Property::with(['location', 'images'])
-            ->where('category_id', $category->id)
-            ->where('is_active', true);
-
-        // Apply additional filters
-        if ($request->filled('price_type')) {
-            $query->where('price_type', $request->price_type);
-        }
-
-        // Apply sorting
-        $sort = $request->get('sort', 'latest');
-        switch ($sort) {
-            case 'price_low':
-                $query->orderBy('price', 'asc');
-                break;
-            case 'price_high':
-                $query->orderBy('price', 'desc');
-                break;
-            default:
-                $query->latest();
-        }
-
-        $properties = $query->paginate(12);
-        $categories = Category::where('is_active', true)->get();
-
-        return view('frontend.properties.category', compact(
-            'properties',
-            'categories',
-            'category'
-        ));
+   /**
+ * Display properties by category.
+ */
+public function category($slug, Request $request)
+{
+    $category = Category::where('slug', $slug)
+        ->where('is_active', true)
+        ->firstOrFail();
+    
+    $query = Property::with(['location', 'images', 'user'])
+        ->where('category_id', $category->id)
+        ->where('is_active', true);
+    
+    // Apply filters
+    if ($request->filled('price_type')) {
+        $query->where('price_type', $request->price_type);
     }
+    
+    if ($request->filled('location')) {
+        $query->whereHas('location', function($q) use ($request) {
+            $q->where('slug', $request->location);
+        });
+    }
+    
+    if ($request->filled('bedrooms')) {
+        $query->where('bedrooms', '>=', $request->bedrooms);
+    }
+    
+    if ($request->filled('min_price')) {
+        $query->where('price', '>=', $request->min_price);
+    }
+    
+    if ($request->filled('max_price')) {
+        $query->where('price', '<=', $request->max_price);
+    }
+    
+    // Apply sorting
+    switch ($request->get('sort', 'latest')) {
+        case 'price_low':
+            $query->orderBy('price', 'asc');
+            break;
+        case 'price_high':
+            $query->orderBy('price', 'desc');
+            break;
+        default:
+            $query->latest();
+    }
+    
+    $properties = $query->paginate(12)->withQueryString();
+    
+    // Get all locations for filter dropdown
+    $locations = Location::where('is_popular', true)
+        ->orderBy('area_name')
+        ->get();
+    
+    return view('frontend.properties.category', compact('category', 'properties', 'locations'));
+}
 
     /**
      * Display properties by location.

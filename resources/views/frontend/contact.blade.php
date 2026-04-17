@@ -268,12 +268,12 @@
                             <div>
                                 <label class="form-label">Full Name *</label>
                                 <input type="text" name="name" value="{{ old('name') }}" required
-                                       class="form-input" placeholder="John Doe">
+                                       class="form-input" placeholder="Kasiye Taye">
                             </div>
                             <div>
                                 <label class="form-label">Email Address *</label>
                                 <input type="email" name="email" value="{{ old('email') }}" required
-                                       class="form-input" placeholder="john@example.com">
+                                       class="form-input" placeholder="kasiye@kasutechtips.com">
                             </div>
                         </div>
                         
