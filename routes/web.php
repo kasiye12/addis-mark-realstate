@@ -227,14 +227,22 @@ Route::get('/locations/search', [AdminLocationController::class, 'search'])->nam
     Route::post('/projects/{project}/toggle-featured', [AdminProjectController::class, 'toggleFeatured'])->name('projects.toggle-featured');
     Route::post('/projects/{project}/toggle-status', [AdminProjectController::class, 'toggleStatus'])->name('projects.toggle-status');
     
-    // Blog Management
-    Route::prefix('blog')->name('blog.')->group(function () {
-        Route::resource('posts', AdminBlogController::class)->except(['show']);
-        Route::post('/posts/{post}/toggle-publish', [AdminBlogController::class, 'togglePublish'])->name('posts.toggle-publish');
-        Route::post('/posts/{post}/toggle-featured', [AdminBlogController::class, 'toggleFeatured'])->name('posts.toggle-featured');
-        Route::resource('categories', AdminBlogCategoryController::class)->except(['show', 'create', 'edit']);
-        Route::post('/categories/{category}/toggle-status', [AdminBlogCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
-    });
+// Blog Management
+Route::prefix('blog')->name('blog.')->group(function () {
+    // Custom routes must come BEFORE the resource route
+    Route::get('/posts/{post}/preview', [AdminBlogController::class, 'preview'])->name('posts.preview');
+    Route::post('/posts/{post}/duplicate', [AdminBlogController::class, 'duplicate'])->name('posts.duplicate');
+    Route::post('/posts/{post}/toggle-publish', [AdminBlogController::class, 'togglePublish'])->name('posts.toggle-publish');
+    Route::post('/posts/{post}/toggle-featured', [AdminBlogController::class, 'toggleFeatured'])->name('posts.toggle-featured');
+    Route::delete('/posts/bulk-delete', [AdminBlogController::class, 'bulkDelete'])->name('posts.bulk-delete');
+    
+    // Resource routes
+    Route::resource('posts', AdminBlogController::class)->except(['show']);
+    
+    // Categories
+    Route::resource('categories', AdminBlogCategoryController::class)->except(['show', 'create', 'edit']);
+    Route::post('/categories/{category}/toggle-status', [AdminBlogCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+});
     
     // Settings Routes
     Route::prefix('settings')->name('settings.')->group(function () {
@@ -248,6 +256,7 @@ Route::get('/locations/search', [AdminLocationController::class, 'search'])->nam
         Route::post('/clear-cache', [SettingController::class, 'clearCache'])->name('clear-cache');
         Route::post('/backup', [SettingController::class, 'createBackup'])->name('backup');
     });
+    
 });
 
 /*

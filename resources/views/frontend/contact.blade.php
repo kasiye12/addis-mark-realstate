@@ -2,6 +2,8 @@
 
 @section('title', 'Contact Us - ' . setting('site_name', 'Addis Mark Real Estate'))
 
+@section('meta_description', 'Contact Addis Mark Real Estate - Ethiopia\'s premier property development company. Visit our office near Welo-Sefer Roundabout or call us for premium properties.')
+
 @push('styles')
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 <style>
@@ -110,26 +112,60 @@
         transform: translateY(-2px);
         box-shadow: 0 12px 25px -5px rgba(37, 99, 235, 0.4);
     }
+    
+    /* Section Label */
+    .section-label {
+        color: #2563eb;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        display: inline-block;
+    }
+    
+    /* Hero Section - REDUCED SIZE like About page */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+    
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
 </style>
 @endpush
 
 @section('content')
 
-<!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-900 py-20 lg:py-28 overflow-hidden">
+<!-- Hero Section - REDUCED SIZE (py-12 lg:py-16 like About page) -->
+<section class="relative bg-blue-600 py-12 lg:py-16 overflow-hidden">
     <div class="absolute inset-0 opacity-10">
         <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/svg%3E')]"></div>
     </div>
     
     <div class="relative container mx-auto px-4 text-center">
-        <span class="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-full text-sm font-medium mb-4" data-aos="fade-up">
-            <i class="ri-customer-service-2-line mr-2"></i>We're Here to Help
+        <span class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-medium mb-4 animate-float" data-aos="fade-up" data-aos-duration="800">
+            <i class="ri-customer-service-2-line mr-1"></i>
+            <span>Mark of Reliability & Excellence</span>
         </span>
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4" data-aos="fade-up" data-aos-delay="100">
+        
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
             Get in Touch
         </h1>
-        <p class="text-xl text-white/90 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
-            Have questions about a property or our services? We're just a message away.
+        
+        <p class="text-base md:text-lg text-white/90 max-w-2xl mx-auto" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+            Have questions about our premium properties or services? We're here to help you find your dream home.
         </p>
     </div>
 </section>
@@ -142,7 +178,7 @@
             <!-- Left Column - Contact Info -->
             <div class="lg:col-span-1 space-y-6">
                 <!-- Office Location Card -->
-                <div class="contact-card" data-aos="fade-up">
+                <div class="contact-card" data-aos="fade-up" data-aos-duration="700">
                     <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                         <i class="ri-map-pin-line text-blue-600"></i>
                         Office Location
@@ -153,13 +189,37 @@
                             <i class="ri-building-line"></i>
                         </div>
                         <div>
-                            <p class="font-semibold text-gray-900">Addis Mark Headquarters</p>
-                            <p class="text-gray-600 text-sm mt-1">Bole Road, Getu Commercial Center<br>5th Floor, Suite 502</p>
+                            <p class="font-semibold text-gray-900">Addis Mark Real Estate</p>
+                            <p class="text-gray-600 text-sm mt-1">Welo-Sefer Roundabout<br>250 Meters into Ethio-China Street</p>
                             <p class="text-gray-600 text-sm mt-1">Addis Ababa, Ethiopia</p>
                         </div>
                     </div>
                     
-                    <div class="info-item">
+                    <!-- Showroom Locations -->
+                    <div class="mt-4 pt-2">
+                        <p class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                            <i class="ri-store-3-line text-blue-600"></i>
+                            Our Locations
+                        </p>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3 group cursor-pointer">
+                                <div class="w-2 h-2 bg-blue-600 rounded-full mt-2 group-hover:scale-150 transition"></div>
+                                <div>
+                                    <p class="font-medium text-gray-800 text-sm">Addis Mark Welo-Sefer</p>
+                                    <p class="text-gray-500 text-xs">Near Welo Sefer Roundabout</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 group cursor-pointer">
+                                <div class="w-2 h-2 bg-blue-600 rounded-full mt-2 group-hover:scale-150 transition"></div>
+                                <div>
+                                    <p class="font-medium text-gray-800 text-sm">Addis Mark Gerji to Bole</p>
+                                    <p class="text-gray-500 text-xs">Gerji to Bole Homes Road</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item mt-4">
                         <div class="info-icon">
                             <i class="ri-time-line"></i>
                         </div>
@@ -173,10 +233,10 @@
                 </div>
                 
                 <!-- Phone & Email Card -->
-                <div class="contact-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="contact-card" data-aos="fade-up" data-aos-duration="700" data-aos-delay="100">
                     <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                         <i class="ri-phone-line text-blue-600"></i>
-                        Phone & Email
+                        Contact Info
                     </h3>
                     
                     <div class="info-item">
@@ -185,12 +245,12 @@
                         </div>
                         <div>
                             <p class="font-semibold text-gray-900">Call Us</p>
-                            <a href="tel:+251112345678" class="text-gray-600 text-sm mt-1 block hover:text-blue-600">
-                                +251 11 234 5678
+                            <a href="tel:+251910413899" class="text-gray-600 text-sm mt-1 block hover:text-blue-600 transition">
+                                +251 91 041 3899
                             </a>
-                            <a href="tel:+251911234567" class="text-gray-600 text-sm block hover:text-blue-600">
-                                +251 91 123 4567
-                            </a>
+                            <!--<a href="tel:+251112345678" class="text-gray-600 text-sm block hover:text-blue-600 transition">-->
+                            <!--    +251 11 234 5678-->
+                            <!--</a>-->
                             <p class="text-gray-400 text-xs mt-2">Available during business hours</p>
                         </div>
                     </div>
@@ -201,16 +261,26 @@
                         </div>
                         <div>
                             <p class="font-semibold text-gray-900">Email Us</p>
-                            <a href="mailto:info@addismark.com" class="text-gray-600 text-sm mt-1 block hover:text-blue-600">
-                                info@addismark.com
+                            <a href="mailto:info@addismarkrealestate.et" class="text-gray-600 text-sm mt-1 block hover:text-blue-600 transition">
+                                info@addismarkrealestate.et
                             </a>
-                            <a href="mailto:sales@addismark.com" class="text-gray-600 text-sm block hover:text-blue-600">
-                                sales@addismark.com
-                            </a>
-                            <a href="mailto:support@addismark.com" class="text-gray-600 text-sm block hover:text-blue-600">
-                                support@addismark.com
+                            <a href="mailto:sales@addismarkrealestate.et" class="text-gray-600 text-sm block hover:text-blue-600 transition">
+                                sales@addismarkrealestate.et
                             </a>
                             <p class="text-gray-400 text-xs mt-2">We'll respond within 24 hours</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Website -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="ri-global-line"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-900">Website</p>
+                            <a href="https://www.addismarkrealestate.et" target="_blank" class="text-gray-600 text-sm mt-1 block hover:text-blue-600 transition">
+                                www.addismarkrealestate.et
+                            </a>
                         </div>
                     </div>
                     
@@ -218,10 +288,10 @@
                     <div class="pt-4 mt-2">
                         <p class="text-sm font-medium text-gray-700 mb-3">Follow Us</p>
                         <div class="flex gap-3">
-                            <a href="{{ setting('facebook_url', '#') }}" class="social-link" target="_blank">
+                            <a href="{{ setting('facebook_url', 'https://facebook.com/addismarkrealestate') }}" class="social-link" target="_blank">
                                 <i class="ri-facebook-fill text-xl"></i>
                             </a>
-                            <a href="{{ setting('instagram_url', '#') }}" class="social-link" target="_blank">
+                            <a href="{{ setting('instagram_url', 'https://instagram.com/addismarkrealestate') }}" class="social-link" target="_blank">
                                 <i class="ri-instagram-line text-xl"></i>
                             </a>
                             <a href="{{ setting('twitter_url', '#') }}" class="social-link" target="_blank">
@@ -230,6 +300,45 @@
                             <a href="{{ setting('linkedin_url', '#') }}" class="social-link" target="_blank">
                                 <i class="ri-linkedin-fill text-xl"></i>
                             </a>
+                            <a href="{{ setting('telegram_url', '#') }}" class="social-link" target="_blank">
+                                <i class="ri-telegram-line text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Info Card -->
+                <div class="contact-card" data-aos="fade-up" data-aos-duration="700" data-aos-delay="150">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="ri-information-line text-blue-600"></i>
+                        Quick Info
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Years of Experience</span>
+                            <span class="font-bold text-blue-600">36+ Years</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Total Units</span>
+                            <span class="font-bold text-blue-600">1,825+</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Active Projects</span>
+                            <span class="font-bold text-blue-600">2</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Sister Company</span>
+                            <span class="font-bold text-blue-600">Alemayehu Ketema GC</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5 pt-3 border-t border-gray-100">
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-3 text-center">
+                            <p class="text-xs text-blue-700 font-medium flex items-center justify-center gap-1">
+                                <i class="ri-shield-check-line"></i>
+                                "Mark of Reliability & Excellence"
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -237,7 +346,7 @@
             
             <!-- Right Column - Contact Form -->
             <div class="lg:col-span-2">
-                <div class="contact-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="contact-card" id="contact-form" data-aos="fade-up" data-aos-duration="700" data-aos-delay="200">
                     <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                         <i class="ri-message-2-line text-blue-600"></i>
                         Send Us a Message
@@ -245,7 +354,7 @@
                     
                     @if(session('success'))
                         <div class="bg-green-50 border border-green-200 text-green-700 px-5 py-4 rounded-xl mb-6 flex items-center gap-3">
-                            <i class="ri-check-line text-xl"></i>
+                            <i class="ri-checkbox-circle-fill text-xl"></i>
                             <span>{{ session('success') }}</span>
                         </div>
                     @endif
@@ -264,16 +373,19 @@
                     <form action="{{ route('contact.send') }}" method="POST">
                         @csrf
                         
+                        {{-- Hidden field to specify recipient email --}}
+                        <input type="hidden" name="recipient_email" value="info@addismarkrealestate.et">
+                        
                         <div class="grid md:grid-cols-2 gap-5 mb-5">
                             <div>
                                 <label class="form-label">Full Name *</label>
                                 <input type="text" name="name" value="{{ old('name') }}" required
-                                       class="form-input" placeholder="Kasiye Taye">
+                                       class="form-input" placeholder="Enter your full name">
                             </div>
                             <div>
                                 <label class="form-label">Email Address *</label>
                                 <input type="email" name="email" value="{{ old('email') }}" required
-                                       class="form-input" placeholder="kasiye@kasutechtips.com">
+                                       class="form-input" placeholder="your@email.com">
                             </div>
                         </div>
                         
@@ -281,7 +393,7 @@
                             <div>
                                 <label class="form-label">Phone Number</label>
                                 <input type="tel" name="phone" value="{{ old('phone') }}"
-                                       class="form-input" placeholder="+251 9...">
+                                       class="form-input" placeholder="+251 XX XXX XXXX">
                             </div>
                             <div>
                                 <label class="form-label">Subject *</label>
@@ -289,7 +401,8 @@
                                     <option value="">Select a subject</option>
                                     <option value="General Inquiry" {{ old('subject') == 'General Inquiry' ? 'selected' : '' }}>General Inquiry</option>
                                     <option value="Property Viewing" {{ old('subject') == 'Property Viewing' ? 'selected' : '' }}>Property Viewing</option>
-                                    <option value="Sell Property" {{ old('subject') == 'Sell Property' ? 'selected' : '' }}>Sell Property</option>
+                                    <option value="Property Purchase" {{ old('subject') == 'Property Purchase' ? 'selected' : '' }}>Property Purchase</option>
+                                    <option value="Commercial Space" {{ old('subject') == 'Commercial Space' ? 'selected' : '' }}>Commercial Space</option>
                                     <option value="Partnership" {{ old('subject') == 'Partnership' ? 'selected' : '' }}>Partnership</option>
                                     <option value="Career" {{ old('subject') == 'Career' ? 'selected' : '' }}>Career Opportunities</option>
                                 </select>
@@ -302,11 +415,13 @@
                                       class="form-input" placeholder="Tell us how we can help you...">{{ old('message') }}</textarea>
                         </div>
                         
-                        <button type="submit" class="submit-btn">
-                            <i class="ri-send-plane-fill mr-2"></i>Send Message
+                        <button type="submit" class="submit-btn group">
+                            <i class="ri-send-plane-fill mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            Send Message
                         </button>
                         
-                        <p class="text-xs text-gray-500 text-center mt-4">
+                        <p class="text-xs text-gray-500 text-center mt-4 flex items-center justify-center gap-1">
+                            <i class="ri-time-line"></i>
                             We'll get back to you within 24 hours
                         </p>
                     </form>
@@ -320,10 +435,11 @@
 <section class="pb-16 lg:pb-24 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="text-center mb-8" data-aos="fade-up">
-            <h2 class="text-2xl font-bold text-gray-900">Find Us on the Map</h2>
-            <p class="text-gray-600 mt-2">Visit our office in Addis Ababa</p>
+            <span class="section-label text-blue-600 text-sm uppercase tracking-wide font-semibold">Find Us</span>
+            <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mt-2">Visit Our Office</h2>
+            <p class="text-gray-600 mt-2">📍 Welo-Sefer Roundabout, 250 Meters into Ethio-China Street</p>
         </div>
-        <div class="map-container" data-aos="fade-up">
+        <div class="map-container" data-aos="fade-up" data-aos-duration="800">
             <iframe 
                 src="https://www.google.com/maps/embed?pb=!4v1776366244046!6m8!1m7!1sCAoSHENJQUJJaENLREw4NTk3MG1keG51TWdyZUpqYWY.!2m2!1d8.992857223416536!2d38.77394489156825!3f112.15688!4f0!5f0.7820865974627469" 
                 width="100%" 
@@ -334,24 +450,37 @@
                 referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>
+        
+        <!-- Direction Note -->
+        <div class="text-center mt-6" data-aos="fade-up" data-aos-delay="100">
+            <p class="text-gray-500 text-sm flex items-center justify-center gap-1">
+                <i class="ri-map-pin-line text-blue-600"></i> 
+                From Welo-Sefer Roundabout, head 250 meters into Ethio-China Street. Our office is located on the right side.
+            </p>
+        </div>
     </div>
 </section>
 
 <!-- CTA Section -->
-<section class="py-16 bg-gradient-to-br from-blue-600 to-blue-800">
+<section class="py-12 bg-gradient-to-br from-blue-600 to-blue-800">
     <div class="container mx-auto px-4 text-center">
-        <div data-aos="zoom-in">
-            <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">
-                Ready to Find Your Dream Property?
+        <div data-aos="zoom-in" data-aos-duration="800">
+            <h2 class="text-2xl lg:text-3xl font-bold text-white mb-3">
+                Ready to Own Your Dream Home?
             </h2>
-            <p class="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-                Browse our exclusive collection of premium properties in Ethiopia's most desirable locations.
+            <p class="text-white/90 text-base mb-6 max-w-2xl mx-auto">
+                Browse our premium properties in prime locations across Addis Ababa. Experience the mark of reliability and excellence.
             </p>
-            <a href="{{ route('properties.index') }}" class="px-8 py-3 bg-white text-blue-700 font-semibold rounded-xl hover:bg-gray-100 transition shadow-lg inline-flex items-center gap-2">
-                <i class="ri-building-line"></i>
-                Browse Properties
-                <i class="ri-arrow-right-line"></i>
-            </a>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="{{ route('properties.index') }}" class="px-6 py-2.5 bg-white text-blue-700 font-semibold rounded-lg hover:bg-gray-100 transition shadow-lg inline-flex items-center gap-2">
+                    <i class="ri-building-line"></i>
+                    Browse Properties
+                </a>
+                <a href="{{ route('about') }}" class="px-6 py-2.5 border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition inline-flex items-center gap-2">
+                    <i class="ri-information-line"></i>
+                    Learn About Us
+                </a>
+            </div>
         </div>
     </div>
 </section>
@@ -362,7 +491,12 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        AOS.init({ duration: 800, once: true, offset: 50 });
+        AOS.init({ 
+            duration: 800, 
+            once: true, 
+            offset: 50,
+            easing: 'ease-out-cubic'
+        });
     });
 </script>
 @endpush
